@@ -10,4 +10,6 @@ func main() {
 
 	location, _ = time.LoadLocation("America/Los_Angeles")
 	fmt.Println("Local time in LosAngeles: ", time.Now().In(location))
+
+	fmt.Println("GMT+2:", time.Now().UTC().Add(2*time.Hour))
 }
