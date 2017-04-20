@@ -47,7 +47,6 @@
       <root url="file://C:/Go/src/log" />
       <root url="file://C:/Go/src/unsafe" />
     </CLASSES>
-    <JAVADOC />
     <SOURCES>
       <root url="file://C:/Go/src/database" />
       <root url="file://C:/Go/src/strings" />
