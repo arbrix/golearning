@@ -9,6 +9,7 @@ import (
 
 	"encoding/json"
 	"strconv"
+"errors"
 )
 
 type DataStr struct {
@@ -16,10 +17,10 @@ type DataStr struct {
 	Lines string `json:"lines"`
 }
 
-func CountLines(folder string) string {
+func CountLines(folder string) (string, error) {
 	f, err := os.Open(folder)
 	if err != nil {
-		panic(err)
+		return "", errors.New("Can't open the file")
 	}
 
 	defer f.Close()
@@ -30,7 +31,7 @@ func CountLines(folder string) string {
 	for ScanF.Scan() {
 		c += 1
 	}
-	return strconv.Itoa(c)
+	return strconv.Itoa(c), nil
 }
 
 func BookHandler(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +42,11 @@ func BookHandler(w http.ResponseWriter, r *http.Request) {
 	BookName := folder + mux.Vars(r)["book"]
 
 	Data.Title = mux.Vars(r)["book"]
-	Data.Lines = CountLines(BookName)
+
+	if _, err := CountLines(BookName); err != nil {
+		fmt.Fprintf(w, fmt.Sprint(err))
+		return
+		}
 
 	jsonStr, err := json.Marshal(Data)
 	if err != nil {
